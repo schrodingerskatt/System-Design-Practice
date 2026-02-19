@@ -72,7 +72,30 @@ public class Board{
     return true;
     }
 
-    
+    public DiscColor getCell(int row, int column){
+        if(!inBounds(row, col)){
+            return null;
+        }
+        return grid[row][column];
+    }
 
+    private int countInDirection(int row, int column, int dr, int dc, DiscColor color){
+
+        int count = 0;
+        int r = row + dr;
+        int c = col + dc;
+        while(inBounds(r, c) && grid[r][c] == color){
+            count++;
+            r+=dr;
+            c+=dc;
+        }
+    return count;
+    }
+
+    private boolean inBounds(int row, int column){
+
+        return row >= 0 && row < ROWS && col >= 0 && column < COLS;
+    }
 
 }
+
