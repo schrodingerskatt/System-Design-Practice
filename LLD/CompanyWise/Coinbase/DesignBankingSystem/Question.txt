@@ -1,0 +1,113 @@
+Question : Design a banking system that supports account management, transactions, and various 
+           financial operations.
+
+Part 1 — Basic Account Operations. Implement basic account creation and transaction operations.
+
+Methods : 
+
+1 - create_account(timestamp: int, customer_id: str) -> bool
+    Creates a new account for the given customer. Returns True if successful, or False 
+    if an account for this customer already exists.
+
+2 - deposit(timestamp: int, customer_id: str, amount: int) -> int
+    Deposits the specified amount into the customer's account. Returns the new balance after the 
+    deposit.
+
+3 - pay(timestamp: int, source_account_id: str, target_account_id: str, amount: int) -> int | None
+    Transfers amount from source account to target account. Returns the remaining balance of the 
+    source account if successful, or None if the transfer fails (insufficient funds or invalid 
+    accounts).
+
+Example 1 :
+Operations:
+
+create_account(1, "cust1")         -> True
+create_account(1, "cust1")         -> False (duplicate)
+deposit(2, "cust1", 100)           -> 100
+pay(3, "cust1", "cust2", 30)       -> None (cust2 doesn't exist)
+
+Part 2 - Top N Pay Statistics. Implement a method to track users who have transferred out the 
+         most money.
+
+Methods : 
+
+1. get_top_n_pay(timestamp: int, n: int) -> list[str]
+   Returns a list of the top n account IDs who have transferred out the highest total amount of 
+   money. The list should be sorted by total amount transferred (descending), and by account ID 
+   (lexicographically) for ties.
+
+Example 2 :
+Operations:
+
+create_account(1, "cust1")
+create_account(2, "cust2")
+create_account(3, "cust3")
+deposit(4, "cust1", 1000)
+deposit(5, "cust2", 500)
+deposit(6, "cust3", 800)
+pay(7, "cust1", "cust2", 200)
+pay(8, "cust1", "cust3", 300)
+pay(9, "cust2", "cust3", 150)
+get_top_n_pay(10, 2)               -> ["cust1", "cust2"] (cust1: 500, cust2: 150)
+
+Part 3 — Scheduled Payments. Implement scheduled payments that can be accepted or cancelled.
+
+Methods : 
+
+1. schedule_payment(timestamp: int, source_account_id: str, target_account_id: str, amount: int, 
+   delay: int) -> str | None
+   Schedules a payment to be executed after delay time units. Returns a unique transfer ID string if
+   successful, or None if the scheduling fails. The transfer ID should be formatted by combining the 
+   source account and timestamp information.
+
+2. accept_payment(timestamp: int, account_id: str, transfer_id: str) -> bool
+   Accepts a scheduled payment. The money is actually transferred to the target account at this 
+   point. Returns True if successful, or False otherwise.
+
+3. cancel_payment(timestamp: int, account_id: str, transfer_id: str) -> bool
+   Cancels a scheduled payment and releases the held funds. Returns True if successful, or False 
+   otherwise.
+
+Note: When a payment is scheduled, the amount is held (reserved) from the source account. 
+      Scheduled payments count towards the "pay out" statistics even before being accepted.
+
+Example 3 : 
+Operations:
+
+create_account(1, "cust1")
+create_account(2, "cust2")
+deposit(3, "cust1", 1000)
+schedule_payment(4, "cust1", "cust2", 100, 10)  -> "cust1_4" (example ID)
+accept_payment(15, "cust2", "cust1_4")          -> True (after delay)
+cancel_payment(5, "cust1", "cust1_4")           -> True (before acceptance)
+
+Part 4 - Merge Accounts, Implement functionality to merge two customer accounts.
+
+Methods :
+
+1. merge_customers(timestamp: int, old_customer_id: str, new_customer_id: str) -> bool
+   Merges two customers into one. The old customer's balance and transaction history are combined 
+   with the new customer's. The old customer ID is then removed from the system. Returns True if 
+   successful, or False if either customer doesn't exist or if they are the same.
+   Note: After merging, all future operations using the old customer ID should fail.
+
+Example 4 :
+Operations : 
+
+create_account(1, "cust1")
+create_account(2, "cust2")
+deposit(3, "cust1", 500)
+deposit(4, "cust2", 300)
+merge_customers(5, "cust1", "cust2")            -> True
+get_balance(6, "cust2")                         -> 800 (combined)
+get_balance(7, "cust1")                         -> None (no longer exists)
+
+
+Constraints :
+
+1 <= timestamp <= 10^9 (timestamps are strictly increasing)
+1 <= amount <= 10^9
+Customer IDs and account IDs are non-empty strings
+Total number of operations per test case: <= 10^5
+All operations must run efficiently for the given constraints
+          

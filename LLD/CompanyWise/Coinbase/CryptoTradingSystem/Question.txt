@@ -1,0 +1,35 @@
+Question : Design a crypto trading system that manages a stream of orders. The system should 
+           support various operations like placing, pausing, resuming, and canceling orders.
+
+Part 1 : Design a crypto trading system that manages a stream of orders. The system should support 
+various operations like placing, pausing, resuming, and canceling orders.All orders start with a 
+status of live.
+
+Implement the following methods:
+
+1. placeOrder(string id, string currency, int amount, int timestamp, string type, string userId)
+
+Creates a new order with the given details and sets its status to live.Returns the order ID.
+If the order ID already exists, return an empty string or handle it gracefully (assume unique IDs 
+for simplicity).
+
+2. pauseOrder(string id)
+
+Updates the status of the order with the given id to paused, ONLY IF the current status is live.
+Returns the order ID if successful, otherwise returns an empty string.
+
+3. resumeOrder(string id)
+
+Updates the status of the order with the given id to live, ONLY IF the current status is paused.
+Returns the order ID if successful, otherwise returns an empty string.
+
+4. cancelOrder(string id)
+
+Updates the status of the order with the given id to canceled.
+This can be done from any status except if it is already canceled (or completed).
+Returns the order ID if successful, otherwise returns an empty string.
+
+5. displayLiveOrders()
+
+Returns a list of strings representing the IDs of all orders that currently have the status live.
+The list should be sorted by the order's timestamp in ascending order.
