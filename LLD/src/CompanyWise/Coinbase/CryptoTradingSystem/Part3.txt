@@ -1,0 +1,34 @@
+/* Core Idea of Part 3 */
+
+We can’t store everything in one map anymore. So we:
+
+1. Create multiple shards (streams)
+2. Route orders based on: shardId = hash(userId) % streamCount
+3. Store each user’s orders in only one shard
+4. Keep a global index for orderId → shardId
+
+5. Why do we need global index?
+
+Ans) Because :
+1. pauseOrder(id)
+2. cancelOrder(id)
+We don’t get userId in those methods. So we must know which shard contains that order.
+
+DESIGN OVERVIEW :
+
+1. OrderShard class
+
+Each shard contains:
+
+  * Map<String, Order>
+  * Map<String, Set<String>> userOrders
+
+2. CryptoTradingSystem contains :
+   
+   * List<OrderShard> shards
+   * Map<String, Integer> orderToShard
+
+
+
+
+
