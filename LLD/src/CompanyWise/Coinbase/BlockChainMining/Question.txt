@@ -1,0 +1,104 @@
+Question : You are building a block construction module for a blockchain node. The goal is to 
+           select a subset of pending transactions to include in the next block such that the total 
+           transaction fees are maximized, while respecting the block size limit.
+
+           This problem is divided into two parts based on transaction complexity.
+
+Part 1 — Basic Transaction Selection
+
+We are given a list of pending transactions. Each transaction has:
+
+id: Unique identifier
+size: The size of the transaction in bytes
+fee: The transaction fee offered by the sender
+We are also given a blockSize limit (total bytes available in the block).
+
+Goal:
+
+1. Select a subset of transactions such that:
+2. The sum of their size does not exceed blockSize.
+3. The sum of their fee is maximized.
+
+Note:
+While this is a variation of the Knapsack Problem, in this scenario we often deal with a very large 
+blockSize and a high throughput of transactions. We prefer a scalable and efficient solution 
+(e.g., greedy approach) over a strictly optimal but slower solution (e.g., dynamic programming).
+
+
+Function Signature : List<Integer> getBestTransactions(List<Transaction> transactions, int blockSize)
+
+Example 1
+
+Input:
+
+blockSize = 10
+transactions = [
+  {id: 1, size: 3, fee: 6},  // Ratio: 2.0
+  {id: 2, size: 4, fee: 8},  // Ratio: 2.0
+  {id: 3, size: 3, fee: 3},  // Ratio: 1.0
+  {id: 4, size: 5, fee: 15}  // Ratio: 3.0
+]
+
+Output: [4, 1, 2]
+
+Explanation:
+
+Tx 4 (Size 5, Fee 15) is selected first (highest ratio). Remaining capacity: 5.
+Tx 1 (Size 3, Fee 6) is selected next. Remaining capacity: 2.
+Tx 2 (Size 4) cannot fit.
+Tx 3 (Size 3) cannot fit.
+If we strictly followed optimal knapsack, we might find a different combination, but for this 
+problem, prioritize the efficiency of the selection strategy.
+
+
+Part 2 — Transactions with Ancestry
+
+In a real blockchain, transactions can depend on each other. A child transaction cannot be mined 
+(included in a block) unless its parent transaction is also included in the same block (or has been 
+mined in a previous block).
+
+For this part, each transaction has an additional optional field: parentId.
+
+1. If parentId is null, it has no unmined dependencies.
+2. If parentId is set, this transaction cannot be included unless the transaction with parentId is 
+    also included in the selected set.
+
+Constraints:
+
+1. One parent can have multiple children.
+2. Each child has only one parent.
+3. Dependency chains can be long (e.g., 1 -> 2 -> 3).
+4. To include 3, you must include 2. To include 2, you must include 1.
+
+Goal: Maximize total fee within blockSize respecting dependencies.
+
+Example 2
+
+Input:
+
+blockSize = 10
+transactions = [
+  {id: 1, size: 5, fee: 5, parentId: null},
+  {id: 2, size: 3, fee: 10, parentId: 1},
+  {id: 3, size: 3, fee: 10, parentId: 2}
+]
+
+Output: [1, 2]
+
+Explanation:
+
+Tx 3 has high fee, but requires Tx 2 and Tx 1. Total size for 1+2+3 is 5+3+3 = 11, which exceeds 
+blockSize 10.
+We cannot take 3 alone.
+We consider the chain 1 -> 2. Total size 8, total fee 15. This fits.
+The selection [1, 2] maximizes fee within the limit.
+
+
+Constraints :
+
+1 <= N <= 100,000 (Number of transactions)
+1 <= blockSize <= 1,000,000
+1 <= size <= 10,000
+1 <= fee <= 1,000,000
+Transaction IDs are unique integers.
+The dependency graph is a collection of trees (forest), no cycles.

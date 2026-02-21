@@ -1,0 +1,118 @@
+Question : For this problem, you will be designing a food delivery system. 
+           This problem is split into three related parts, evolving from basic data retrieval to a 
+           comprehensive system with analytics and optimization.
+
+Part 1 — Basic Restaurant Search
+(This part focuses on basic data structure usage and geometric calculations.)
+
+Given a list of Items and a list of Restaurants, implement functions to query the cheapest item 
+and the nearest restaurant.
+
+Data Structures :
+
+Item: {restaurant_id, item_name, price}
+Restaurant: {restaurant_id, x, y}
+
+Requirements : Implement a class or helper functions to support
+
+1. Find Cheapest Restaurant: Given an item_name, return the restaurant_id of the restaurant selling 
+   that item for the lowest price.
+
+2. Find Nearest Restaurant: Given a user's coordinate (user_x, user_y) and an item_name, return the 
+   restaurant_id of the restaurant selling that item which is closest to the user. 
+   (Distance is Euclidean: $\sqrt{(x_1-x_2)^2 + (y_1-y_2)^2}$).
+
+Example 1 :
+
+Input:
+
+Restaurants:
+{id: 1, x: 0, y: 0}
+{id: 2, x: 3, y: 4}
+
+Items:
+{r_id: 1, name: "Burger", price: 10}
+{r_id: 2, name: "Burger", price: 8}
+{r_id: 1, name: "Pizza", price: 15}
+
+Output:
+
+findCheapestRestaurant("Burger") -> 2  (Price 8 < 10)
+findNearestRestaurant(user_x=1, user_y=1, item="Burger") -> 1 (Distance to R1 is √2 ≈ 1.41, to R2 is √13 ≈ 3.60)
+
+Part 2 — Order Analytics
+
+(This part focuses on processing time-series data and range queries.)
+Given a list of Orders and a time range, calculate statistics for the business.
+
+Data Structures
+Order: {order_id, item_id, total_amount, timestamp}
+Input: A list of orders and a query range [start_time, end_time].
+Requirements
+Implement a function queryStats(start_time, end_time) that returns:
+
+Count: Total number of orders in the range.
+Total Amount: Sum of total_amount for all orders in the range.
+Average Amount: Average value of orders in the range.
+Example 2
+Input:
+
+Orders:
+{id: 101, amount: 10, time: 1}
+{id: 102, amount: 30, time: 3}
+{id: 103, amount: 20, time: 5}
+
+Query Range: [1, 4]
+Output:
+
+Count: 2 (Orders 101 and 102)
+Total Amount: 40 (10 + 30)
+Average Amount: 20 (40 / 2)
+
+Part 3 — Comprehensive Delivery System
+Combine the functionality from previous parts into a single FoodDeliverySystem class and add 
+advanced optimization features considering delivery time and cost.
+
+Data Structures
+You will receive input data for:
+
+Restaurants: locations and menu items.
+Orders: historical order data.
+Courier Speed: Assume a constant average speed for delivery calculations, or provided per request.
+Requirements
+Implement the FoodDeliverySystem class with the following methods:
+
+findMinDeliveryTime(user_x, user_y, item_name)
+
+Returns the minimum time required to deliver item_name to the user.
+Time = (Euclidean Distance / Courier Speed) + (Prep Time if applicable, otherwise 0).
+findMinCostItem(user_x, user_y, item_name)
+
+Returns the restaurant_id (or item details) that offers the lowest total cost for the item.
+Total Cost = Item Price + Delivery Cost.
+Assume Delivery Cost is a function of distance (e.g., $1.00 per unit distance) or provided by the 
+system. 
+getOrderAnalytics(start, end)
+
+Retains the functionality from Part 2 to serve analytics requests.
+Example 3
+Input:
+
+User: (3.0, 1.5)
+
+Restaurants:
+R1: x=4.5, y=6.8, has "Burger" @ $8
+R2: x=3.1, y=8.9, has "Burger" @ $10
+
+Speed: 10 units/hour
+Delivery Cost Rate: $0.5 per unit distance
+Output:
+
+findMinDeliveryTime("Burger") -> Calculate distances, divide by speed, return min time.
+findMinCostItem("Burger") -> Calculate (Price + Distance * 0.5) for each, return min.
+Constraints
+1 <= Number of Restaurants <= 10^4
+1 <= Number of Items <= 10^5
+1 <= Number of Orders <= 10^6
+Coordinates are floating point numbers.
+Timestamps are integers.
