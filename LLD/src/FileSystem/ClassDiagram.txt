@@ -1,0 +1,55 @@
+/*
+class FileSystem:
+     - root : Folder
+     + FileSystem()
+     + createFile(path, content) -> File
+     + createFolder(path) -> Folder
+     + delete(path)
+     + list(path) -> List<FileSystemEntry>
+     + get(path) -> FileSystemEntry
+     + rename(path, newName)
+     + move(srcPath, destPath)
+
+abstract class FileSystemEntry:
+    - name: string
+    - parent: Folder?
+
+    + FileSystemEntry(name)
+    + getName() -> string
+    + setName(name)
+    + getParent() -> Folder?
+    + setParent(Folder?)
+    + getPath() -> string
+    + isDirectory() -> boolean  // abstract
+
+
+class File extends FileSystemEntry:
+     - content : string
+
+     + File(name, content)
+     + getContent() -> string
+     + setContent(content)
+     + isDirectory() -> false
+
+class Folder extends FileSystemEntry:
+    - children: Map<string, FileSystemEntry>
+
+    + Folder(name)
+    + isDirectory() -> true
+    + addChild(entry) -> boolean
+    + removechild(name) -> FileSystemEntry?
+    + getChild(name) -> FileSystemEntry?
+    + haschild(name) -> boolean
+    + getChildren() -> List<FileSystemEntry>
+
+
+
+
+
+
+
+
+
+
+
+*/

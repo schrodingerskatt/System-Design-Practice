@@ -1,0 +1,44 @@
+/*
+You already know what a file system is, you use one every day. Open Finder or Windows Explorer, and 
+you're navigating folders, creating files, moving things around. An in-memory file system is just 
+that, minus the disk. Everything lives in RAM, which means we get to focus purely on the data 
+structures and operations without worrying about persistence, caching, or I/O performance.
+
+1. Single root. Keep it Unix-style with paths like /home/user/file.txt
+2. operations supported - create, delete, move and rename
+3. files should store content, simple string content is fine
+4. If someone tries to create a path where the parent folder doesn't exists or tries to delete the
+   root it should throw exception
+5. Scale we are targeting ?
+   Assume tens of thousands of entries. It should stay responsive even with deep folder hierarchies.
+
+Requirements:
+1. Hierarchical file system with single root directory
+2. Files store string content
+3. Folders contain files and other folders
+4. Create and delete files and folders
+5. List contents of a folder
+6. Navigate/resolve absolute paths (e.g., /home/user/docs)
+7. Rename and move files and folders
+8. Retrieve full path from any file/folder reference
+9. Scale to tens of thousands of entries in memory
+
+Out of Scope:
+- Search functionality
+- Relative path resolution (../ or ./)
+- Permissions, ownership, timestamps
+- File type-specific behavior
+- Persistence / disk storage
+- Symbolic links
+- UI layer
+
+1. File : An entity. A file has name, stores content and exists at a specific location in the tree.
+          It's a leaf node that can't contain other entries.
+
+2. Folder : An entity, A folder has a name and contains other entries, either files or more folders
+            Unlike a file, it doesn't store content. It's a container.
+
+3. FileSystem : The Orchestrator. owns the root folder, parses paths and provides the public API for 
+                all operations. External code interacts with this class, never directly with files or
+                folders.
+*/
