@@ -1,0 +1,6 @@
+1. SystemDesignIO - https://systemdesign.io/
+2. HelloInterview - https://www.hellointerview.com/
+3. RefactoringGuru - https://refactoring.guru/design-patterns/
+4. OfferRetriver - https://offerretriever.com/dashboard/
+5. System Design Blogs - https://blog.levelupcoding.com/
+6. 
